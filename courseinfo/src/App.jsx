@@ -45,7 +45,7 @@ const App = () => {
       ],
     },
   ];
-
+  console.log("test");
   return (
     <>
       {courses.map((course) => {

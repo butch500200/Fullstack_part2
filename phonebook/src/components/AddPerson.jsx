@@ -7,13 +7,13 @@ export const AddPerson = ({ addPerson, phoneBook }) => {
   const [cantAdd, setCantAdd] = useState(false);
 
   const textOnChangeHandler = (e) => {
-    if (
-      phoneBook.find((person) => person.name === e.target.value) != undefined
-    ) {
-      setCantAdd(true);
-    } else {
-      setCantAdd(false);
-    }
+    // if (
+    //   phoneBook.find((person) => person.name === e.target.value) != undefined
+    // ) {
+    //   setCantAdd(true);
+    // } else {
+    //   setCantAdd(false);
+    // }
     setNewName(e.target.value);
   };
 
@@ -24,7 +24,7 @@ export const AddPerson = ({ addPerson, phoneBook }) => {
       number: newNumbers,
       id: phoneBook.length + 1,
     };
-    console.log(newPerson);
+    //console.log(newPerson);
 
     addPerson(newPerson);
     setNewName("");

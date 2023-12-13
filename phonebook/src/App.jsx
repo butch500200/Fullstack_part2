@@ -20,6 +20,13 @@ const App = () => {
     });
   }, []);
 
+  const setNotificationMessageToNull = () => {
+    setNotificationMessage({
+      message: null,
+      positive: true,
+    });
+  };
+
   const addPerson = (person) => {
     //console.log(person.id);
     const existingPerson = persons.find((per) => per.id === person.id);
@@ -36,9 +43,7 @@ const App = () => {
             positive: true,
           };
           setNotificationMessage(notification);
-          setTimeout(() => {
-            setNotificationMessage(...notificationMessage, (message = null));
-          }, 3000);
+          setTimeout(setNotificationMessageToNull, 3000);
           setPersons(
             persons.map((currentPerson) =>
               currentPerson.id === updatedPerson.id
@@ -55,9 +60,7 @@ const App = () => {
           positive: true,
         };
         setNotificationMessage(notification);
-        setTimeout(() => {
-          setNotificationMessage(...notificationMessage, (message = null));
-        }, 3000);
+        setTimeout(setNotificationMessageToNull, 3000);
         setPersons(persons.concat(newPerson));
       });
     }
@@ -69,9 +72,7 @@ const App = () => {
       .then((response) => {
         const notification = { message: `person deleted `, positive: true };
         setNotificationMessage(notification);
-        setTimeout(() => {
-          setNotificationMessage(...notificationMessage, (message = null));
-        }, 3000);
+        setTimeout(setNotificationMessageToNull, 3000);
         setPersons(persons.filter((person) => person.id !== id));
       })
       .catch((error) => {
@@ -80,9 +81,7 @@ const App = () => {
           positive: false,
         };
         setNotificationMessage(notification);
-        setTimeout(() => {
-          setNotificationMessage(...notificationMessage, (message = null));
-        }, 3000);
+        setTimeout(setNotificationMessageToNull, 3000);
       });
   };
 

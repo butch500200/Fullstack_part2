@@ -1,23 +1,29 @@
 import { useState, useEffect } from "react";
 import { ShowNumbers } from "./components/ShowNumbers";
 import { AddPerson } from "./components/AddPerson";
+import { Notification } from "./components/Notification";
 import axios from "axios";
 import personsService from "./services/persons";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
+  const [notificationMessage, setNotificationMessage] = useState({
+    message: null,
+    positive: null,
+  });
 
   useEffect(() => {
     console.log("effect");
     personsService.getPeople().then((phoneBook) => {
-      console.log(phoneBook);
+      //console.log(phoneBook);
       setPersons(phoneBook);
     });
   }, []);
 
   const addPerson = (person) => {
-    console.log(person);
+    //console.log(person.id);
     const existingPerson = persons.find((per) => per.id === person.id);
+    //console.log("existing person", existingPerson);
     if (existingPerson) {
       if (
         window.confirm(
@@ -25,7 +31,14 @@ const App = () => {
         )
       ) {
         personsService.updateNumber(person).then((updatedPerson) => {
-          console.log(updatedPerson);
+          const notification = {
+            message: `updated ${updatedPerson.name}'s number`,
+            positive: true,
+          };
+          setNotificationMessage(notification);
+          setTimeout(() => {
+            setNotificationMessage(...notificationMessage, (message = null));
+          }, 3000);
           setPersons(
             persons.map((currentPerson) =>
               currentPerson.id === updatedPerson.id
@@ -37,21 +50,49 @@ const App = () => {
       }
     } else {
       personsService.addPerson(person).then((newPerson) => {
+        const notification = {
+          message: `added ${newPerson.name} to the phonebook`,
+          positive: true,
+        };
+        setNotificationMessage(notification);
+        setTimeout(() => {
+          setNotificationMessage(...notificationMessage, (message = null));
+        }, 3000);
         setPersons(persons.concat(newPerson));
       });
     }
   };
 
   const deletePerson = (id) => {
-    personsService.deletePerson(id).then((response) => {
-      console.log(response);
-      setPersons(persons.filter((person) => person.id !== id));
-    });
+    personsService
+      .deletePerson(id)
+      .then((response) => {
+        const notification = { message: `person deleted `, positive: true };
+        setNotificationMessage(notification);
+        setTimeout(() => {
+          setNotificationMessage(...notificationMessage, (message = null));
+        }, 3000);
+        setPersons(persons.filter((person) => person.id !== id));
+      })
+      .catch((error) => {
+        const notification = {
+          message: `person was already deleted`,
+          positive: false,
+        };
+        setNotificationMessage(notification);
+        setTimeout(() => {
+          setNotificationMessage(...notificationMessage, (message = null));
+        }, 3000);
+      });
   };
 
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification
+        message={notificationMessage.message}
+        positive={notificationMessage.positive}
+      ></Notification>
       <AddPerson addPerson={addPerson} phoneBook={persons} />
       <ShowNumbers
         phoneBook={persons}

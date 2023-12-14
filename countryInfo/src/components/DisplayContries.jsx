@@ -1,8 +1,13 @@
 import React from "react";
 import { Contry } from "./Contry";
 
-export const DisplayContries = ({ contries }) => {
+export const DisplayContries = ({ contries, setContry }) => {
   const numContries = contries.length;
+
+  const handleShowClicked = (country) => {
+    console.log(country);
+    setContry(country);
+  };
 
   if (numContries === 0) {
     return <div>no contries</div>;
@@ -17,7 +22,9 @@ export const DisplayContries = ({ contries }) => {
           return (
             <li key={contry.name.official}>
               {contry.name.common}
-              <button>show</button>
+              <button onClick={() => handleShowClicked(contry.name.common)}>
+                show
+              </button>
             </li>
           );
         })}

@@ -9,7 +9,7 @@ export const Contry = ({ contry }) => {
       <h2>Languages</h2>
       <ul>
         {Object.entries(contry.languages).map(([key, lang]) => {
-          return <li>{lang}</li>;
+          return <li key={key}>{lang}</li>;
         })}
       </ul>
       <img src={contry.flags.png}></img>

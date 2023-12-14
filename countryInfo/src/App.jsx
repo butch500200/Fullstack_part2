@@ -29,7 +29,10 @@ function App() {
           value={filter}
           onChange={(e) => handleFilterChange(e.target.value)}
         />
-        <DisplayContries contries={filteredContries}></DisplayContries>
+        <DisplayContries
+          contries={filteredContries}
+          setContry={setFilter}
+        ></DisplayContries>
       </div>
     </>
   );

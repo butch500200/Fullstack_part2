@@ -4,6 +4,7 @@ import { Person } from "./Person";
 
 export const ShowNumbers = ({ phoneBook, deletePerson }) => {
   const [filter, setFilter] = useState("");
+  // console.log("phonebook", phoneBook);
 
   const filterChangeHandler = (e) => {
     setFilter(e.target.value);

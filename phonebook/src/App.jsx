@@ -29,41 +29,61 @@ const App = () => {
 
   const addPerson = (person) => {
     const existingPerson = persons.find((per) => per.name === person.name);
-    person = { ...person, id: existingPerson.id };
     console.log("existing person", existingPerson);
     if (existingPerson) {
+      person = { ...person, id: existingPerson.id };
       if (
         window.confirm(
           `${existingPerson.name} is already added to the phonebook, replace the old number with the new one?`
         )
       ) {
-        personsService.updateNumber(person).then((updatedPerson) => {
-          //notification
+        personsService
+          .updateNumber(person)
+          .then((updatedPerson) => {
+            //notification
+            const notification = {
+              message: `updated ${updatedPerson.name}'s number`,
+              positive: true,
+            };
+            setNotificationMessage(notification);
+            setTimeout(setNotificationMessageToNull, 3000);
+            setPersons(
+              persons.map((currentPerson) =>
+                currentPerson.id === updatedPerson.id
+                  ? updatedPerson
+                  : currentPerson
+              )
+            );
+          })
+          .catch((error) => {
+            const notification = {
+              message: error.response.data.error,
+              positive: false,
+            };
+            setNotificationMessage(notification);
+            setTimeout(setNotificationMessageToNull, 3000);
+          });
+      }
+    } else {
+      personsService
+        .addPerson(person)
+        .then((newPerson) => {
           const notification = {
-            message: `updated ${updatedPerson.name}'s number`,
+            message: `added ${newPerson.name} to the phonebook`,
             positive: true,
           };
           setNotificationMessage(notification);
           setTimeout(setNotificationMessageToNull, 3000);
-          setPersons(
-            persons.map((currentPerson) =>
-              currentPerson.id === updatedPerson.id
-                ? updatedPerson
-                : currentPerson
-            )
-          );
+          setPersons(persons.concat(newPerson));
+        })
+        .catch((error) => {
+          const notification = {
+            message: error.response.data.error,
+            positive: false,
+          };
+          setNotificationMessage(notification);
+          setTimeout(setNotificationMessageToNull, 3000);
         });
-      }
-    } else {
-      personsService.addPerson(person).then((newPerson) => {
-        const notification = {
-          message: `added ${newPerson.name} to the phonebook`,
-          positive: true,
-        };
-        setNotificationMessage(notification);
-        setTimeout(setNotificationMessageToNull, 3000);
-        setPersons(persons.concat(newPerson));
-      });
     }
   };
 

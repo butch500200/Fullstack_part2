@@ -26,6 +26,7 @@ export const AddPerson = ({ addPerson, phoneBook }) => {
     //console.log(newPerson);
 
     addPerson(newPerson);
+
     setNewName("");
     setnewNumbers("");
   };

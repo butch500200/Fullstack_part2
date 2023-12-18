@@ -28,9 +28,9 @@ const App = () => {
   };
 
   const addPerson = (person) => {
-    //console.log(person.id);
-    const existingPerson = persons.find((per) => per.id === person.id);
-    //console.log("existing person", existingPerson);
+    const existingPerson = persons.find((per) => per.name === person.name);
+    person = { ...person, id: existingPerson.id };
+    console.log("existing person", existingPerson);
     if (existingPerson) {
       if (
         window.confirm(
@@ -38,6 +38,7 @@ const App = () => {
         )
       ) {
         personsService.updateNumber(person).then((updatedPerson) => {
+          //notification
           const notification = {
             message: `updated ${updatedPerson.name}'s number`,
             positive: true,

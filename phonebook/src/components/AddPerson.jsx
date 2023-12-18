@@ -22,7 +22,6 @@ export const AddPerson = ({ addPerson, phoneBook }) => {
     const newPerson = {
       name: newName,
       number: newNumbers,
-      id: phoneBook.length + 1,
     };
     //console.log(newPerson);
 
